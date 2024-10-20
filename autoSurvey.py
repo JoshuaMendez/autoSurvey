@@ -145,6 +145,7 @@ def main():
     boton = tk.Button(tab, text="Iniciar", command=tab.quit)
     boton.configure(bg="blue", fg="white")
     boton.pack()
+    tk.Label(tab, text="Made by LaRata", font=("Helvetica", 8, "italic")).pack()
     tab.mainloop()
     username = user.get()
     password = passw.get()
