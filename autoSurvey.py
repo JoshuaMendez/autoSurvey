@@ -49,6 +49,7 @@ def evaluacion_docentes(calificacion, comment, driver):
 
         encuesta_links[0].click()
         driver.switch_to.window(driver.window_handles[-1])  # Cambiar a la nueva ventana
+        time.sleep(2)
         complete_survey(calificacion, comment, driver)
         driver.close()  # Cierra la ventana de la encuesta
         driver.switch_to.window(driver.window_handles[0])  # Regresa a la ventana original
@@ -59,6 +60,7 @@ def evaluacion_docentes(calificacion, comment, driver):
         driver.refresh()
 
 def complete_survey(calificacion, comment, driver):
+    time.sleep(3)
     first_page(calificacion, driver)
     time.sleep(1)
     second_page(calificacion, comment, driver)
