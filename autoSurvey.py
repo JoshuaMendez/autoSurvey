@@ -10,7 +10,7 @@ def generate_code(secret):
     secretKey = secret.replace(' ', '')
     return pyotp.TOTP(secretKey).now()
 
-def login(username, password, secret_key, driver):
+def login(username, password, secret_key, driver, temp_key):
     driver.get('https://mg-local.servicios.javerianacali.edu.co/')
     time.sleep(1)
     doble_factor_button = driver.find_element(By.CLASS_NAME, "img-doble-factor")
@@ -28,7 +28,11 @@ def login(username, password, secret_key, driver):
 
     # Generar el código y enviarlo
     fa = driver.find_element(By.ID, 'token')
-    sk = generate_code(secret_key)
+    sk = secret_key
+    if len(sk) > 0:
+        sk = generate_code(secret_key)
+    else:
+        sk = temp_key
     fa.send_keys(sk)
     time.sleep(1)
 
@@ -128,7 +132,7 @@ def fourth_page(calificacion, driver):
 def main():
     tab = tk.Tk()
     tab.title("AutoSurvey")
-    tab.geometry("300x300")
+    tab.geometry("300x350")
     tk.Label(tab, text="Username").pack()
     user = tk.Entry(tab, width=30)
     user.pack()
@@ -138,6 +142,9 @@ def main():
     tk.Label(tab, text="Secret Key").pack()
     secret = tk.Entry(tab, width=30)
     secret.pack()
+    tk.Label(tab, text="Temp Key").pack()
+    tempKey = tk.Entry(tab, width=30)
+    tempKey.pack()
     tk.Label(tab, text="Calificacion").pack()
     calif = tk.Scale(tab, from_=1, to=5, orient=tk.HORIZONTAL)
     calif.pack()
@@ -152,11 +159,12 @@ def main():
     username = user.get()
     password = passw.get()
     secret_key = secret.get()
+    temp_key = tempKey.get()
     comment = comment.get("1.0", tk.END).strip()
     calificacion = calif.get()
 
     driver = webdriver.Chrome()
-    login(username, password, secret_key, driver)
+    login(username, password, secret_key, driver, temp_key)
     evaluacion_docentes(calificacion, comment, driver)
     driver.quit()
 
