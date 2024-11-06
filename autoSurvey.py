@@ -129,6 +129,14 @@ def fourth_page(calificacion, driver):
     )
     guardar.click()
 
+def toggle_password():
+    if passw.cget('show') == '':
+        passw.config(show='*')  # Oculta la contraseña
+        ojo_button.config(text='👁️')  # Cambia el ícono
+    else:
+        passw.config(show='')  # Muestra la contraseña
+        ojo_button.config(text='👁️*')  # Cambia el ícono
+
 def main():
     tab = tk.Tk()
     tab.title("AutoSurvey")
@@ -137,8 +145,19 @@ def main():
     user = tk.Entry(tab, width=30)
     user.pack()
     tk.Label(tab, text="Password").pack()
-    passw = tk.Entry(tab, width=30)
-    passw.pack()
+    pass_frame = tk.Frame(tab)  # Un frame para colocar la contraseña y el botón de mostrar
+    pass_frame.pack()
+    global passw, ojo_button
+    passw = tk.Entry(pass_frame, show='*', width=25)  # Oculta la contraseña por defecto
+    passw.pack(side='left')
+    
+    ojo_button = tk.Button(pass_frame, text='👁️', command=toggle_password)
+    ojo_button.pack(side='left')
+    
+    # opcion = tk.StringVar(value="secret")  # Valor por defecto
+    # tk.Radiobutton(tab, text="Usar Secret Key", variable=opcion, value="secret", command=habilitar_campo).pack()
+    # tk.Radiobutton(tab, text="Usar Temp Key", variable=opcion, value="temp", command=habilitar_campo).pack()
+
     tk.Label(tab, text="Secret Key").pack()
     secret = tk.Entry(tab, width=30)
     secret.pack()
